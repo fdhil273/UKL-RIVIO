@@ -1,0 +1,92 @@
+/* PALET WARNA SESUAI DESAIN */
+:root {
+    --primary: #2148C0; /* Biru pekat sidebar */
+    --bg-main: #F4F7FE; /* Latar abu-abu sangat muda */
+    --text-dark: #1B2559;
+    --text-gray: #A3AED0;
+}
+
+* { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { margin: 0; display: flex; background-color: var(--bg-main); color: var(--text-dark); min-height: 100vh; }
+
+/* SIDEBAR FULL BIRU */
+.sidebar {
+    width: 260px;
+    background-color: var(--primary);
+    color: white;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    border-radius: 0 30px 30px 0;
+}
+
+.sidebar-brand {
+    font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 40px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+.sidebar-menu { display: flex; flex-direction: column; gap: 5px; }
+.sidebar a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none; padding: 15px 20px; border-radius: 12px;
+    font-weight: 500; display: flex; align-items: center; gap: 15px;
+    transition: 0.3s;
+}
+.sidebar a.active, .sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1); color: white; font-weight: bold;
+}
+
+.sidebar-profile {
+    margin-top: auto; display: flex; align-items: center; gap: 15px;
+    padding: 15px 10px; border-top: 1px solid rgba(255,255,255,0.1);
+}
+.profile-avatar {
+    width: 45px; height: 45px; background: #e0e0e0; border-radius: 50%;
+    color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;
+}
+
+/* MAIN CONTENT */
+.main-content { margin-left: 260px; padding: 40px 50px; width: 100%; }
+
+.header-user { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+.header-user h1 { margin: 0; font-size: 28px; }
+.header-user p { margin: 5px 0 0 0; font-size: 24px; font-weight: bold; color: var(--primary); }
+
+.search-bar {
+    background: white; padding: 12px 20px; border-radius: 30px;
+    display: flex; align-items: center; gap: 10px; width: 300px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+.search-bar input { border: none; outline: none; width: 100%; color: var(--text-gray); }
+
+/* GRID LAYOUT SESUAI GAMBAR */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Kiri 2 bagian, Kanan 1 bagian */
+    gap: 30px;
+}
+
+.grid-left { display: flex; flex-direction: column; gap: 30px; }
+.grid-right { display: flex; flex-direction: column; gap: 30px; }
+
+/* KARTU KOMPONEN */
+.card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+.card-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: var(--text-dark); }
+
+/* KHUSUS JADWAL */
+.jadwal-item {
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    padding: 15px; border-radius: 12px; margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.jadwal-item.urgent { background: linear-gradient(135deg, #ffd3d3, #ffe5e5); }
+.jadwal-item h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--text-dark); }
+.jadwal-item p { margin: 0; font-size: 12px; color: #666; }
+
+/* KHUSUS FINANCE */
+.finance-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.icon-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.icon-green { background: #E6F9F1; color: #2ECC71; }
+.icon-red { background: #FFF0F0; color: #FF4757; }

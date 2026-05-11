@@ -1,0 +1,119 @@
+/* PALET WARNA RIVIO */
+:root {
+    --galaxy: #081F5C;
+    --planetary: #334EAC;
+    --universe: #7096D1;
+    --milkyway: #FFF9F0;
+    --sky: #D0E3FF;
+}
+
+* { box-sizing: border-box; }
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; 
+    background-color: var(--milkyway); 
+    color: var(--galaxy);
+}
+
+/* TOP NAVBAR */
+.navbar {
+    background-color: var(--galaxy);
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.navbar a {
+    color: var(--sky);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar a.active, .navbar a:hover {
+    background-color: var(--planetary);
+    color: white;
+}
+
+.logout-btn {
+    background-color: rgba(255, 71, 87, 0.1);
+    color: #ff4757 !important;
+}
+
+.logout-btn:hover {
+    background-color: #ff4757 !important;
+    color: white !important;
+}
+
+/* MAIN CONTENT AREA */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 30px; 
+}
+
+/* STATS CARD */
+.card-stat { 
+    background: white; 
+    padding: 20px 30px; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--planetary);
+    min-width: 200px;
+}
+
+/* DATA TABLE */
+.table-container { 
+    background: white; 
+    padding: 30px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
+}
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 15px; border-bottom: 2px solid var(--sky); color: var(--planetary); }
+td { padding: 15px; border-bottom: 1px solid #f0f0f0; }
+tr:hover { background-color: #fcfcfc; }
+
+/* TOMBOL AKSI */
+.btn { 
+    padding: 8px 15px; 
+    text-decoration: none; 
+    color: white; 
+    border-radius: 8px; 
+    font-size: 13px; 
+    font-weight: bold;
+    display: inline-block;
+}
+.btn-admin { background-color: var(--planetary); }
+.btn-user { background-color: var(--universe); }
+.btn-hapus { background-color: #ff4757; }
