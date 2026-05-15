@@ -9,29 +9,28 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
 
 $id_user = $_SESSION['id_user'];
 
-// 1. HITUNG PEMASUKAN & PENGELUARAN (Sesuai kolom databasemu)
-$q_masuk = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='Pemasukan'");
+// 1. HITUNG DENGAN KATA KUNCI 'income' DAN 'expense'
+$q_masuk = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='income'");
 $pemasukan = mysqli_fetch_assoc($q_masuk)['total'] ?? 0;
 
-$q_keluar = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='Pengeluaran'");
+$q_keluar = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='expense'");
 $pengeluaran = mysqli_fetch_assoc($q_keluar)['total'] ?? 0;
 
 $saldo = $pemasukan - $pengeluaran;
 
-// 2. AMBIL TARGET KEUANGAN TERBARU
+// 2. TARGET KEUANGAN
 $q_target = mysqli_query($koneksi, "SELECT * FROM finance_target WHERE user_id='$id_user' ORDER BY id DESC LIMIT 1");
 $target_data = mysqli_fetch_assoc($q_target);
 $target_amount = $target_data['target_amount'] ?? 0;
 $target_desc = $target_data['description'] ?? 'Belum ada target';
 
-// Hitung persentase target
 $progress = 0;
 if ($target_amount > 0 && $saldo > 0) {
     $progress = ($saldo / $target_amount) * 100;
-    if ($progress > 100) $progress = 100; // Mentok 100%
+    if ($progress > 100) $progress = 100;
 }
 
-// 3. AMBIL RIWAYAT TRANSAKSI
+// 3. RIWAYAT TRANSAKSI
 $q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_user' ORDER BY date_transaction DESC, id DESC");
 ?>
 
@@ -100,8 +99,8 @@ $q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_us
                         <div style="margin-bottom: 15px;">
                             <label style="font-size: 13px; color: #666;">Jenis</label>
                             <select name="type" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; margin-top: 5px;" required>
-                                <option value="Pemasukan">Pemasukan (+)</option>
-                                <option value="Pengeluaran">Pengeluaran (-)</option>
+                                <option value="income">Pemasukan (+)</option>
+                                <option value="expense">Pengeluaran (-)</option>
                             </select>
                         </div>
                         <div style="margin-bottom: 15px;">
@@ -128,7 +127,8 @@ $q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_us
                     <?php 
                     if ($q_riwayat && mysqli_num_rows($q_riwayat) > 0) {
                         while($row = mysqli_fetch_assoc($q_riwayat)) { 
-                            $is_masuk = ($row['type'] == 'Pemasukan');
+                            // DETEKSI MENGGUNAKAN 'income'
+                            $is_masuk = ($row['type'] == 'income');
                             $icon = $is_masuk ? 'fa-arrow-down' : 'fa-arrow-up';
                             $color = $is_masuk ? '#2ECC71' : '#FF4757';
                             $bg = $is_masuk ? '#E6F9F1' : '#FFF0F0';

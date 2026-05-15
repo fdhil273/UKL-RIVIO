@@ -28,13 +28,13 @@ $is_setting   = strpos($uri_path, '/setting') !== false;
         <a href="<?php echo $base_url; ?>/user/dashboard.php" class="<?php echo $is_dashboard ? 'active' : ''; ?>">
             <i class="fas fa-border-all"></i> Dashboard
         </a>
-        <a href="<?php echo $base_url; ?>/user/calendar.php" class="<?php echo $is_calendar ? 'active' : ''; ?>">
+        <a href="<?php echo $base_url; ?>/user/kalender/index.php" class="<?php echo $is_kalender ? 'active' : ''; ?>">
             <i class="far fa-calendar-alt"></i> Calendar
         </a>
-        <a href="<?php echo $base_url; ?>/user/projects.php" class="<?php echo $is_projects ? 'active' : ''; ?>">
+        <a href="<?php echo $base_url; ?>/user/project/index.php" class="<?php echo $is_projects ? 'active' : ''; ?>">
             <i class="far fa-folder"></i> Project
         </a>
-        <a href="<?php echo $base_url; ?>/user/notes.php" class="<?php echo $is_notes ? 'active' : ''; ?>">
+        <a href="<?php echo $base_url; ?>/user/notes/index.php" class="<?php echo $is_notes ? 'active' : ''; ?>">
             <i class="far fa-file-alt"></i> Notes
         </a>
         <a href="<?php echo $base_url; ?>/user/task/index.php" class="<?php echo $is_task ? 'active' : ''; ?>">

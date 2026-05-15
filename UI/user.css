@@ -222,3 +222,70 @@ body { margin: 0; display: flex; background-color: var(--bg-main); color: var(--
 .modal-btn { padding: 10px 30px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; margin: 0 5px; text-decoration: none; display: inline-block; }
 .btn-no { background: var(--galaxy); color: white; }
 .btn-yes { background: #A3AED0; color: white; }
+
+/* --- KHUSUS HALAMAN NOTES --- */
+.notes-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 20px; 
+}
+.note-card { 
+    background: white; padding: 20px; border-radius: 15px; 
+    border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.02); 
+    transition: 0.3s; position: relative; display: flex; flex-direction: column;
+}
+.note-card:hover { 
+    transform: translateY(-5px); box-shadow: 0 8px 25px rgba(33,72,192,0.1); 
+    border-color: var(--primary); 
+}
+.note-title { 
+    font-weight: bold; font-size: 16px; color: var(--galaxy); 
+    margin-bottom: 10px; padding-right: 50px; 
+}
+.note-content { 
+    font-size: 13px; color: #666; line-height: 1.6; 
+    margin-bottom: 15px; white-space: pre-wrap; flex-grow: 1;
+}
+.note-date { 
+    font-size: 11px; color: #A3AED0; border-top: 1px solid #f0f0f0; 
+    padding-top: 10px; display: flex; justify-content: space-between; align-items: center; 
+}
+.note-actions { 
+    position: absolute; top: 15px; right: 15px; display: flex; gap: 5px; 
+}
+.btn-icon-note { 
+    width: 28px; height: 28px; border-radius: 6px; display: flex; 
+    align-items: center; justify-content: center; font-size: 12px; 
+    cursor: pointer; text-decoration: none; transition: 0.3s; 
+}
+.btn-edit-note { background: #FFF9F0; color: #F39C12; }
+.btn-edit-note:hover { background: #F39C12; color: white; }
+.btn-delete-note { background: #FFF0F0; color: #FF4757; }
+.btn-delete-note:hover { background: #FF4757; color: white; }
+
+
+
+/* --- KHUSUS HALAMAN CALENDAR / JADWAL --- */
+.agenda-list { 
+    background: white; border-radius: 15px; padding: 25px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+}
+.agenda-item { 
+    display: flex; align-items: flex-start; padding: 20px 15px; 
+    border-bottom: 1px solid #f5f5f5; gap: 20px; transition: 0.3s; 
+    border-radius: 10px;
+}
+.agenda-item:hover { 
+    background: #fcfcfc; transform: translateX(5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+.agenda-date-box { 
+    background: #E2EBFF; color: var(--primary); padding: 12px 10px; 
+    border-radius: 12px; text-align: center; min-width: 65px; 
+}
+.agenda-date-box .day { font-size: 24px; font-weight: bold; line-height: 1; margin-bottom: 3px; }
+.agenda-date-box .month { font-size: 12px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
+.agenda-info { flex: 1; }
+.agenda-title { font-weight: bold; color: var(--galaxy); font-size: 16px; margin-bottom: 8px; }
+.agenda-time { font-size: 12px; color: #A3AED0; margin-bottom: 8px; display: flex; gap: 15px; font-weight: 500; }
+.agenda-desc { font-size: 13px; color: #666; line-height: 1.5; }

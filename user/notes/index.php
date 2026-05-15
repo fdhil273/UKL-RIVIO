@@ -2,46 +2,108 @@
 session_start();
 include '../../config/koneksi.php';
 
-if (!isset($_SESSION['id_user'])) {
+if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
     header("Location: ../../login.php");
-    exit;
+    exit();
 }
 
-$user_id = $_SESSION['id_user'];
+$id_user = $_SESSION['id_user'];
 
-$data = mysqli_query($koneksi, "SELECT * FROM notes WHERE user_id = $user_id ORDER BY id DESC");
+// --- LOGIKA SEARCH ---
+$search = isset($_GET['search']) ? mysqli_real_escape_string($koneksi, $_GET['search']) : '';
+$query_sql = "SELECT * FROM notes WHERE user_id='$id_user'";
+
+if (!empty($search)) {
+    // Cari berdasarkan judul atau isi
+    $query_sql .= " AND (title LIKE '%$search%' OR content LIKE '%$search%')";
+}
+
+$query_sql .= " ORDER BY id DESC";
+$q_notes = mysqli_query($koneksi, $query_sql);
 ?>
 
 <!DOCTYPE html>
-
-<html>
+<html lang="id">
 <head>
-    <title>Notes</title>
+    <meta charset="UTF-8">
+    <title>Notes | RIVIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../UI/user.css">
 </head>
 <body>
 
-<h2>Notes</h2>
+    <?php $current_page = 'index.php'; include '../sidebar.php'; ?>
 
-<form method="GET">
-    <input type="text" name="search" placeholder="Cari note...">
-    <button type="submit">Cari</button>
-</form>
+    <div class="main-content">
+        <div class="header-user" style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1>My Notes</h1>
+                <p>Simpan ide dan gagasanmu dengan rapi.</p>
+            </div>
+            
+            <form action="index.php" method="GET" style="display: flex; gap: 10px;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #A3AED0;"></i>
+                    <input type="text" name="search" placeholder="Cari catatan..." value="<?php echo htmlspecialchars($search); ?>" 
+                           style="padding: 10px 15px 10px 40px; border-radius: 10px; border: 1px solid #eee; outline: none; width: 250px;">
+                </div>
+                <?php if(!empty($search)): ?>
+                    <a href="index.php" style="padding: 10px; color: #FF4757; text-decoration: none;"><i class="fas fa-times"></i></a>
+                <?php endif; ?>
+            </form>
+        </div>
 
-<br>
-<a href="add.php">+ Tambah Note</a>
-<br><br>
+        <div class="dashboard-grid">
+            <div class="grid-left" style="flex: 1;">
+                <div class="card" style="position: sticky; top: 20px;">
+                    <div class="card-title">Tulis Catatan Baru</div>
+                    <form action="tambah_note.php" method="POST">
+                        <div style="margin-bottom: 15px;">
+                            <input type="text" name="title" placeholder="Judul Catatan" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; font-weight: bold;" required>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <textarea name="content" rows="6" placeholder="Tulis sesuatu..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; resize: none; font-family: inherit;" required></textarea>
+                        </div>
+                        <button type="submit" name="simpan_note" style="background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold;"><i class="fas fa-save"></i> Simpan Catatan</button>
+                    </form>
+                </div>
+            </div>
 
-<?php while ($row = mysqli_fetch_assoc($data)) { ?>
-    <div style="border:1px solid black; padding:10px; margin-bottom:10px;">
-        <h4><?= $row['title']; ?></h4>
-        <p><?= $row['content']; ?></p>
-        <a href="delete.php?id=<?= $row['id']; ?>" onclick="return confirm('Hapus note?')">Hapus</a>
-        <a href="edit.php?id=<?= $row['id']; ?>">Edit</a>
+            <div class="grid-right" style="flex: 2;">
+                <div class="notes-grid">
+                    <?php 
+                    if ($q_notes && mysqli_num_rows($q_notes) > 0) {
+                        while($row = mysqli_fetch_assoc($q_notes)) { 
+                            // LOGIKA SINGKAT: Potong teks jika lebih dari 120 karakter
+                            $isi_catatan = $row['content'];
+                            $is_long = strlen($isi_catatan) > 120;
+                            $display_content = $is_long ? substr($isi_catatan, 0, 120) . "..." : $isi_catatan;
+                    ?>
+                        <div class="note-card">
+                            <div class="note-actions">
+                                <a href="edit_note.php?id=<?php echo $row['id']; ?>" class="btn-icon-note btn-edit-note"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="hapus_note.php?id=<?php echo $row['id']; ?>" class="btn-icon-note btn-delete-note" onclick="return confirm('Hapus catatan?');"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="note-title"><?php echo htmlspecialchars($row['title']); ?></div>
+                            
+                            <div class="note-content"><?php echo htmlspecialchars($display_content); ?></div>
+                            
+                            <div class="note-date">
+                                <span><i class="far fa-clock"></i> <?php echo date('d M Y', strtotime($row['created_at'])); ?></span>
+                                <?php if($is_long): ?>
+                                    <a href="edit_note.php?id=<?php echo $row['id']; ?>" style="color: var(--primary); text-decoration: none; font-size: 11px; font-weight: bold;">Baca Selengkapnya</a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php 
+                        } 
+                    } else { 
+                        echo "<div style='grid-column: 1 / -1; text-align: center; color: #A3AED0; padding: 40px;'><p>Catatan tidak ditemukan.</p></div>";
+                    } 
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
-<?php } ?>
-
-<br>
-<a href="../dashboard.php">Kembali</a>
-
 </body>
-</html>a
+</html>
