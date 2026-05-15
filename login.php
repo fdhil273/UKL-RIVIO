@@ -6,7 +6,7 @@ if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = mysqli_prepare($koneksi, "SELECT id, username, password, role FROM users WHERE username = ?");
+    $stmt = mysqli_prepare($koneksi, "SELECT id, username, email, password, role FROM users WHERE username = ?");
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -16,6 +16,7 @@ if (isset($_POST['login'])) {
         $_SESSION['id_user']  = $data['id'];
         $_SESSION['username'] = $data['username'];
         $_SESSION['role']     = $data['role'];
+        $_SESSION['email'] = $data['email'];
 
         if ($data['role'] == "admin") {
             header("Location: admin/dashboard.php");

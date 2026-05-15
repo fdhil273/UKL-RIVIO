@@ -117,3 +117,80 @@ tr:hover { background-color: #fcfcfc; }
 .btn-admin { background-color: var(--planetary); }
 .btn-user { background-color: var(--universe); }
 .btn-hapus { background-color: #ff4757; }
+
+/* GRID UNTUK 3 STATISTIK - DIUBAH KE FLEXBOX BIAR WAJIB KE SAMPING */
+.stats-container {
+    display: flex; /* Pakai flex agar otomatis menyamping */
+    justify-content: space-between; /* Memberi jarak merata */
+    gap: 25px; /* Jarak antar kotak */
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.card-stat { 
+    flex: 1; /* Membuat ketiganya punya lebar yang sama rata */
+    background: white; 
+    padding: 25px 30px; 
+    border-radius: 20px; /* Sudut lebih melengkung */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03); /* Shadow lebih halus */
+    border-left: 6px solid var(--planetary);
+}
+
+.card-stat.admin { border-left-color: #f39c12; }
+.card-stat.user { border-left-color: #2ecc71; }
+
+/* SEARCH BAR - DESAIN SAAS MODERN (BENTUK PIL) */
+.search-wrapper {
+    display: flex;
+    justify-content: flex-end; /* Dorong search bar ke kanan */
+    margin-bottom: 25px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 6px 6px 6px 20px; /* Padding dalam (kiri lebih lebar buat teks) */
+    border-radius: 50px; /* Membuat bentuk pil melengkung penuh */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    width: 350px; /* Lebar search bar */
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.search-form:focus-within {
+    border-color: var(--planetary);
+    box-shadow: 0 5px 20px rgba(51, 78, 172, 0.1);
+}
+
+.search-form input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: var(--galaxy);
+    background: transparent;
+}
+
+.search-form input::placeholder {
+    color: #A3AED0;
+}
+
+.search-form button {
+    background: var(--planetary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px; /* Tombol juga ikut melengkung */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-form button:hover {
+    background: var(--galaxy);
+}
