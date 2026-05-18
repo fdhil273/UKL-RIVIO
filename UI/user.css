@@ -1,13 +1,25 @@
 /* PALET WARNA SESUAI DESAIN */
 :root {
-    --primary: #2148C0; /* Biru pekat sidebar */
-    --bg-main: #F4F7FE; /* Latar abu-abu sangat muda */
+    --primary: #2148C0;
+    /* Biru pekat sidebar */
+    --bg-main: #F4F7FE;
+    /* Latar abu-abu sangat muda */
     --text-dark: #1B2559;
     --text-gray: #A3AED0;
 }
 
-* { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-body { margin: 0; display: flex; background-color: var(--bg-main); color: var(--text-dark); min-height: 100vh; }
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
 
 /* SIDEBAR FULL BIRU */
 .sidebar {
@@ -26,136 +38,368 @@ body { margin: 0; display: flex; background-color: var(--bg-main); color: var(--
     padding: 10px;
     margin-bottom: 30px;
     display: flex;
-    justify-content: center; /* Logo di tengah */
+    justify-content: center;
+    /* Logo di tengah */
     align-items: center;
 }
 
 .profile-avatar {
-    flex-shrink: 0; /* Agar avatar tidak gepeng kalau teks nama kepanjangan */
+    flex-shrink: 0;
+    /* Agar avatar tidak gepeng kalau teks nama kepanjangan */
 }
 
-.sidebar-menu { display: flex; flex-direction: column; gap: 5px; }
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .sidebar a {
     color: rgba(255, 255, 255, 0.7);
-    text-decoration: none; padding: 15px 20px; border-radius: 12px;
-    font-weight: 500; display: flex; align-items: center; gap: 15px;
+    text-decoration: none;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
     transition: 0.3s;
 }
-.sidebar a.active, .sidebar a:hover {
-    background-color: rgba(255, 255, 255, 0.1); color: white; font-weight: bold;
+
+.sidebar a.active,
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: bold;
 }
 
 .sidebar-profile {
-    margin-top: auto; display: flex; align-items: center; gap: 15px;
-    padding: 15px 10px; border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .profile-avatar {
-    width: 45px; height: 45px; background: #e0e0e0; border-radius: 50%;
-    color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;
+    width: 45px;
+    height: 45px;
+    background: #e0e0e0;
+    border-radius: 50%;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 /* MAIN CONTENT */
-.main-content { margin-left: 260px; padding: 40px 50px; width: 100%; }
+.main-content {
+    margin-left: 260px;
+    padding: 40px 50px;
+    width: 100%;
+}
 
-.header-user { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
-.header-user h1 { margin: 0; font-size: 28px; }
-.header-user p { margin: 5px 0 0 0; font-size: 24px; font-weight: bold; color: var(--primary); }
+.header-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.header-user h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.header-user p {
+    margin: 5px 0 0 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+}
 
 .search-bar {
-    background: white; padding: 12px 20px; border-radius: 30px;
-    display: flex; align-items: center; gap: 10px; width: 300px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    background: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
-.search-bar input { border: none; outline: none; width: 100%; color: var(--text-gray); }
+
+.search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    color: var(--text-gray);
+}
 
 /* GRID LAYOUT SESUAI GAMBAR */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Kiri 2 bagian, Kanan 1 bagian */
+    grid-template-columns: 2fr 1fr;
+    /* Kiri 2 bagian, Kanan 1 bagian */
     gap: 30px;
 }
 
-.grid-left { display: flex; flex-direction: column; gap: 30px; }
-.grid-right { display: flex; flex-direction: column; gap: 30px; }
+.grid-left {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.grid-right {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
 
 /* KARTU KOMPONEN */
-.card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-.card-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: var(--text-dark); }
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
 
 /* KHUSUS JADWAL */
 .jadwal-item {
     background: linear-gradient(135deg, #e0eafc, #cfdef3);
-    padding: 15px; border-radius: 12px; margin-bottom: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-.jadwal-item.urgent { background: linear-gradient(135deg, #ffd3d3, #ffe5e5); }
-.jadwal-item h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--text-dark); }
-.jadwal-item p { margin: 0; font-size: 12px; color: #666; }
+
+.jadwal-item.urgent {
+    background: linear-gradient(135deg, #ffd3d3, #ffe5e5);
+}
+
+.jadwal-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.jadwal-item p {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+}
 
 /* KHUSUS FINANCE */
-.finance-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-.icon-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.icon-green { background: #E6F9F1; color: #2ECC71; }
-.icon-red { background: #FFF0F0; color: #FF4757; }
+.finance-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-green {
+    background: #E6F9F1;
+    color: #2ECC71;
+}
+
+.icon-red {
+    background: #FFF0F0;
+    color: #FF4757;
+}
 
 /* --- KHUSUS HALAMAN TASKS --- */
-.task-form { display: flex; gap: 15px; margin-bottom: 30px; }
-.task-form input {
-    flex: 1; padding: 15px 20px; border: 1px solid #eee; 
-    border-radius: 12px; font-size: 14px; outline: none; transition: 0.3s;
+.task-form {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
 }
-.task-form input:focus { border-color: var(--primary); box-shadow: 0 4px 15px rgba(33, 72, 192, 0.1); }
+
+.task-form input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.task-form input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(33, 72, 192, 0.1);
+}
+
 .task-form button {
-    background: var(--primary); color: white; border: none; 
-    padding: 0 25px; border-radius: 12px; cursor: pointer; font-weight: bold;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .task-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 20px; background: white; border-radius: 12px;
-    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    border: 1px solid #fafafa; transition: 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    border: 1px solid #fafafa;
+    transition: 0.3s;
 }
-.task-item:hover { border-color: #ddd; transform: translateX(5px); }
-.task-title { font-size: 15px; color: var(--text-dark); font-weight: 500; }
 
-.action-group { display: flex; gap: 8px; }
+.task-item:hover {
+    border-color: #ddd;
+    transform: translateX(5px);
+}
+
+.task-title {
+    font-size: 15px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.action-group {
+    display: flex;
+    gap: 8px;
+}
+
 .btn-action {
-    width: 35px; height: 35px; border-radius: 8px; border: none;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: 0.3s; text-decoration: none; font-size: 14px;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    font-size: 14px;
 }
-.btn-check { background: #E6F9F1; color: #2ECC71; }
-.btn-check:hover { background: #2ECC71; color: white; }
-.btn-edit { background: #FFF9F0; color: #F39C12; }
-.btn-edit:hover { background: #F39C12; color: white; }
-.btn-delete { background: #FFF0F0; color: #FF4757; }
-.btn-delete:hover { background: #FF4757; color: white; }
 
-.task-done .task-title { text-decoration: line-through; color: #A3AED0; }
+.btn-check {
+    background: #E6F9F1;
+    color: #2ECC71;
+}
+
+.btn-check:hover {
+    background: #2ECC71;
+    color: white;
+}
+
+.btn-edit {
+    background: #FFF9F0;
+    color: #F39C12;
+}
+
+.btn-edit:hover {
+    background: #F39C12;
+    color: white;
+}
+
+.btn-delete {
+    background: #FFF0F0;
+    color: #FF4757;
+}
+
+.btn-delete:hover {
+    background: #FF4757;
+    color: white;
+}
+
+.task-done .task-title {
+    text-decoration: line-through;
+    color: #A3AED0;
+}
 
 /* --- KHUSUS HALAMAN FINANCE --- */
 .finance-summary {
-    display: flex; gap: 20px; margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
 }
-.finance-card {
-    flex: 1; background: white; padding: 25px; border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #fafafa;
-}
-.finance-card h3 { font-size: 14px; color: #A3AED0; font-weight: normal; margin-bottom: 10px; }
-.finance-card .amount { font-size: 24px; font-weight: bold; color: var(--galaxy); }
-.text-green { color: #2ECC71 !important; }
-.text-red { color: #FF4757 !important; }
 
-.transaction-list { background: white; padding: 20px; border-radius: 15px; }
-.transaction-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 0; border-bottom: 1px solid #f0f0f0;
+.finance-card {
+    flex: 1;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid #fafafa;
 }
-.transaction-item:last-child { border-bottom: none; }
+
+.finance-card h3 {
+    font-size: 14px;
+    color: #A3AED0;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.finance-card .amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--galaxy);
+}
+
+.text-green {
+    color: #2ECC71 !important;
+}
+
+.text-red {
+    color: #FF4757 !important;
+}
+
+.transaction-list {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
 .trans-icon {
-    width: 40px; height: 40px; border-radius: 10px; display: flex; 
-    align-items: center; justify-content: center; font-size: 18px; margin-right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 15px;
 }
 
 /* Efek Hover untuk Profil Clickable */
@@ -163,6 +407,7 @@ body { margin: 0; display: flex; background-color: var(--bg-main); color: var(--
     background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
 }
+
 .sidebar-profile:hover i.fa-cog {
     color: white;
     transform: rotate(90deg);
@@ -171,121 +416,443 @@ body { margin: 0; display: flex; background-color: var(--bg-main); color: var(--
 
 /* --- KHUSUS HALAMAN SETTING --- */
 .settings-container {
-    background: white; padding: 40px; border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03); max-width: 800px;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    max-width: 800px;
 }
-.avatar-section { text-align: center; margin-bottom: 40px; position: relative; }
+
+.avatar-section {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
 .avatar-circle {
-    width: 90px; height: 90px; background: #e0eafc; border-radius: 50%;
-    margin: 0 auto; display: flex; align-items: center; justify-content: center;
-    font-size: 30px; color: var(--primary); font-weight: bold; position: relative;
+    width: 90px;
+    height: 90px;
+    background: #e0eafc;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--primary);
+    font-weight: bold;
+    position: relative;
 }
+
 .avatar-cam {
-    position: absolute; bottom: 0; right: calc(50% - 45px); 
-    background: var(--primary); color: white; width: 28px; height: 28px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    border: 3px solid white; font-size: 12px; cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: calc(50% - 45px);
+    background: var(--primary);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    font-size: 12px;
+    cursor: pointer;
 }
 
 .section-title {
-    display: flex; align-items: center; gap: 10px; color: var(--primary);
-    font-weight: bold; font-size: 16px; margin-bottom: 5px; margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 30px;
 }
-.section-desc { font-size: 12px; color: #A3AED0; margin-bottom: 15px; margin-left: 28px; }
 
-.form-row { display: flex; gap: 20px; }
-.form-group { flex: 1; margin-bottom: 15px; }
-.form-group label { display: block; font-size: 13px; color: #666; margin-bottom: 8px; }
+.section-desc {
+    font-size: 12px;
+    color: #A3AED0;
+    margin-bottom: 15px;
+    margin-left: 28px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
 .form-control {
-    width: 100%; padding: 12px 15px; border: 1px solid #eee; border-radius: 8px;
-    font-size: 14px; outline: none; background: white; transition: 0.3s;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+    transition: 0.3s;
 }
 
 /* Efek saat input tidak bisa diedit (Readonly) */
-.form-control:read-only { background: #fafafa; color: #888; border-color: #f0f0f0; }
-.form-control:not(:read-only):focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(33,72,192,0.1); }
+.form-control:read-only {
+    background: #fafafa;
+    color: #888;
+    border-color: #f0f0f0;
+}
 
-.btn-setting { padding: 10px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; }
-.btn-edit-mode { background: var(--primary); color: white; display: flex; align-items: center; gap: 8px; }
-.btn-logout-mode { background: white; color: var(--galaxy); border: 1px solid #ddd; display: flex; align-items: center; gap: 8px; }
+.form-control:not(:read-only):focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(33, 72, 192, 0.1);
+}
+
+.btn-setting {
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+}
+
+.btn-edit-mode {
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-logout-mode {
+    background: white;
+    color: var(--galaxy);
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
 /* MODAL LOGOUT */
 .modal-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255,255,255,0.7); backdrop-filter: blur(4px);
-    z-index: 1000; align-items: center; justify-content: center;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
 }
+
 .modal-box {
-    background: white; padding: 40px; border-radius: 20px; text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 350px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 350px;
 }
-.modal-btn { padding: 10px 30px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; margin: 0 5px; text-decoration: none; display: inline-block; }
-.btn-no { background: var(--galaxy); color: white; }
-.btn-yes { background: #A3AED0; color: white; }
+
+.modal-btn {
+    padding: 10px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-no {
+    background: var(--galaxy);
+    color: white;
+}
+
+.btn-yes {
+    background: #A3AED0;
+    color: white;
+}
 
 /* --- KHUSUS HALAMAN NOTES --- */
-.notes-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
-    gap: 20px; 
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
 }
-.note-card { 
-    background: white; padding: 20px; border-radius: 15px; 
-    border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.02); 
-    transition: 0.3s; position: relative; display: flex; flex-direction: column;
+
+.note-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
-.note-card:hover { 
-    transform: translateY(-5px); box-shadow: 0 8px 25px rgba(33,72,192,0.1); 
-    border-color: var(--primary); 
+
+.note-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(33, 72, 192, 0.1);
+    border-color: var(--primary);
 }
-.note-title { 
-    font-weight: bold; font-size: 16px; color: var(--galaxy); 
-    margin-bottom: 10px; padding-right: 50px; 
+
+.note-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--galaxy);
+    margin-bottom: 10px;
+    padding-right: 50px;
 }
-.note-content { 
-    font-size: 13px; color: #666; line-height: 1.6; 
-    margin-bottom: 15px; white-space: pre-wrap; flex-grow: 1;
+
+.note-content {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+    flex-grow: 1;
 }
-.note-date { 
-    font-size: 11px; color: #A3AED0; border-top: 1px solid #f0f0f0; 
-    padding-top: 10px; display: flex; justify-content: space-between; align-items: center; 
+
+.note-date {
+    font-size: 11px;
+    color: #A3AED0;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.note-actions { 
-    position: absolute; top: 15px; right: 15px; display: flex; gap: 5px; 
+
+.note-actions {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 5px;
 }
-.btn-icon-note { 
-    width: 28px; height: 28px; border-radius: 6px; display: flex; 
-    align-items: center; justify-content: center; font-size: 12px; 
-    cursor: pointer; text-decoration: none; transition: 0.3s; 
+
+.btn-icon-note {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
 }
-.btn-edit-note { background: #FFF9F0; color: #F39C12; }
-.btn-edit-note:hover { background: #F39C12; color: white; }
-.btn-delete-note { background: #FFF0F0; color: #FF4757; }
-.btn-delete-note:hover { background: #FF4757; color: white; }
+
+.btn-edit-note {
+    background: #FFF9F0;
+    color: #F39C12;
+}
+
+.btn-edit-note:hover {
+    background: #F39C12;
+    color: white;
+}
+
+.btn-delete-note {
+    background: #FFF0F0;
+    color: #FF4757;
+}
+
+.btn-delete-note:hover {
+    background: #FF4757;
+    color: white;
+}
 
 
 
-/* --- KHUSUS HALAMAN CALENDAR / JADWAL --- */
-.agenda-list { 
-    background: white; border-radius: 15px; padding: 25px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+/* FITUR CALENDAR*/
+.calendar-container { display: flex; gap: 30px; align-items: flex-start; }
+
+/* --- KIRI: KALENDER UTAMA --- */
+.calendar-main { flex: 1; background: #FFFFFF; border-radius: 24px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid #F1F5F9; }
+.calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+.calendar-header-title { display: flex; align-items: center; gap: 15px; }
+.calendar-header h2 { margin: 0; color: var(--galaxy); font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+.btn-nav-cal { background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: 0.2s; }
+.btn-nav-cal:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* Toggle View (Bulan/Pekan) */
+.cal-view-tabs { display: flex; background: #F1F5F9; border-radius: 10px; padding: 4px; }
+.cal-view-tab { padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #64748B; text-decoration: none; transition: 0.2s; }
+.cal-view-tab.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+/* Grid Kalender Melengkung */
+.calendar-wrapper { border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; }
+.calendar-grid { width: 100%; border-collapse: collapse; table-layout: fixed; background: white; }
+.calendar-grid th { background: #F8FAFC; color: #64748B; padding: 12px 0; font-weight: 700; font-size: 12px; text-align: center; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; }
+.calendar-grid th:last-child { border-right: none; }
+
+/* FIX TINGGI GRID  */
+.calendar-grid td { border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0; height: 85px; vertical-align: top; padding: 8px; transition: 0.2s; }
+.calendar-grid td:last-child { border-right: none; }
+.calendar-grid tr:last-child td { border-bottom: none; }
+.calendar-grid td:hover { background: #F8FAFC; }
+.calendar-grid td.empty { background: #F8FAFC; opacity: 0.4; }
+
+/* KHUSUS TAMPILAN PEKANAN (Lebih tinggi karena cuma 1 baris) */
+.calendar-grid.week-view td { min-height: 300px; height: auto; padding-bottom: 20px; }
+
+/* --- KANAN: SIDEBAR FORM --- */
+.calendar-sidebar { width: 280px; flex-shrink: 0; background: #FFFFFF; padding: 25px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid #F1F5F9; }
+
+
+/* Angka Tanggal */
+.date-header { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.date-number { font-size: 14px; font-weight: 600; color: #475569; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.calendar-grid td.today .date-number { background: var(--primary); color: white; }
+
+/* Event Pills (Warna Pastel Elegan) */
+.events-area { display: flex; flex-direction: column; gap: 4px; }
+.event-pill { font-size: 11px; padding: 5px 8px; border-radius: 6px; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; display: block; text-decoration: none; transition: 0.2s; border: 1px solid transparent; }
+.event-pill:hover { filter: brightness(0.95); transform: translateY(-1px); }
+
+/* Kategori Warna Profesional */
+.event-meeting { background: #E0F2FE; color: #0284C7; border-color: #BAE6FD; }
+.event-task { background: #FEF08A; color: #854D0E; border-color: #FDE047; }
+.event-deadline { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
+
+/* Legend */
+.calendar-legend { display: flex; gap: 20px; margin-top: 25px; align-items: center; justify-content: center; padding-top: 20px; border-top: 1px dashed #E2E8F0; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #64748B; }
+.legend-dot { width: 12px; height: 12px; border-radius: 4px; }
+
+/* --- KANAN: SIDEBAR FORM --- */
+.calendar-sidebar { flex: 0.8; background: #FFFFFF; padding: 30px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid #F1F5F9; }
+.form-cal-group { margin-bottom: 20px; }
+.form-cal-group label { display: block; font-size: 13px; color: #64748B; margin-bottom: 8px; font-weight: 700; }
+.form-cal-input { width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid #E2E8F0; outline: none; transition: 0.3s; font-family: inherit; font-size: 14px; background: #F8FAFC; }
+.form-cal-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(33,72,192,0.1); }
+
+/* Input Date Khusus (Warna Biru sesuai layoutmu) */
+.input-date-special { background: #EFF6FF !important; color: var(--primary) !important; font-weight: 700 !important; border: 1px solid #DBEAFE !important; }
+
+.btn-tambah-cal { background: var(--primary); color: white; font-weight: 700; font-size: 15px; width: 100%; padding: 15px; border: none; border-radius: 12px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+.btn-tambah-cal:hover { box-shadow: 0 8px 20px rgba(33,72,192,0.2); transform: translateY(-2px); }
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
-.agenda-item { 
-    display: flex; align-items: flex-start; padding: 20px 15px; 
-    border-bottom: 1px solid #f5f5f5; gap: 20px; transition: 0.3s; 
-    border-radius: 10px;
+
+.modal-box {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
-.agenda-item:hover { 
-    background: #fcfcfc; transform: translateX(5px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+
+.form-group {
+    margin-bottom: 20px;
 }
-.agenda-date-box { 
-    background: #E2EBFF; color: var(--primary); padding: 12px 10px; 
-    border-radius: 12px; text-align: center; min-width: 65px; 
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #64748B;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
-.agenda-date-box .day { font-size: 24px; font-weight: bold; line-height: 1; margin-bottom: 3px; }
-.agenda-date-box .month { font-size: 12px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
-.agenda-info { flex: 1; }
-.agenda-title { font-weight: bold; color: var(--galaxy); font-size: 16px; margin-bottom: 8px; }
-.agenda-time { font-size: 12px; color: #A3AED0; margin-bottom: 8px; display: flex; gap: 15px; font-weight: 500; }
-.agenda-desc { font-size: 13px; color: #666; line-height: 1.5; }
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(33, 72, 192, 0.1);
+}
+
+/* FITUR PROJECT*/
+.project-header-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.search-add-group { display: flex; gap: 15px; align-items: center; }
+.search-box { position: relative; }
+.search-box input { padding: 10px 15px 10px 35px; border-radius: 20px; border: 1px solid #E2E8F0; width: 300px; outline: none; background: #F8FAFC;}
+.search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94A3B8; }
+.btn-add { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; transition: 0.3s; }
+.btn-add:hover { opacity: 0.9; transform: translateY(-2px); }
+
+/* Tabs */
+.project-tabs { display: flex; gap: 30px; border-bottom: 2px solid #F1F5F9; margin-bottom: 30px; }
+.tab-item { padding: 10px 0; color: #64748B; font-weight: 600; cursor: pointer; font-size: 15px; position: relative; transition: 0.3s; }
+.tab-item.active { color: var(--primary); }
+.tab-item.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 3px; background: var(--primary); border-radius: 3px 3px 0 0; }
+
+/* Grid & Card */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+.project-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 24px; padding: 25px; transition: 0.3s; position: relative; display: flex; flex-direction: column; }
+.project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(33,72,192,0.08); border-color: var(--primary); }
+.project-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.project-card h3 { font-size: 20px; color: var(--galaxy); margin: 0; font-weight: 700; transition: 0.2s; }
+.project-card h3:hover { color: var(--primary); }
+.project-desc { font-size: 13px; color: #64748B; margin-bottom: 20px; line-height: 1.5; flex-grow: 1; }
+
+/* Badges */
+.badge-status { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;}
+.badge-active { background: #E0F2FE; color: #0284C7; }
+.badge-completed { background: #DCFCE7; color: #16A34A; }
+.badge-draft { background: #F1F5F9; color: #64748B; }
+
+/* Progress */
+.progress-header { display: flex; justify-content: space-between; font-size: 13px; color: #64748B; margin-bottom: 8px; font-weight: 600;}
+.progress-header span:last-child { color: var(--galaxy); }
+.progress-track { width: 100%; background: #F1F5F9; height: 8px; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.5s ease-in-out; }
+.project-date { font-size: 11px; color: #94A3B8; display: flex; align-items: center; gap: 8px; font-weight: 500;}
+
+/* Action Buttons (Edit/Delete) */
+.action-buttons { display: flex; gap: 12px; }
+.action-buttons a { color: #CBD5E1; transition: 0.2s; }
+.action-buttons a:hover.btn-edit { color: var(--primary); }
+.action-buttons a:hover.btn-delete { color: #EF4444; }
+
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+.modal-box { background: white; padding: 30px; border-radius: 24px; width: 400px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 13px; color: #64748B; margin-bottom: 8px; font-weight: 600;}
+.form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #E2E8F0; border-radius: 12px; font-family: inherit; outline: none; transition: 0.3s;}
+.form-group input:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(33,72,192,0.1); }
