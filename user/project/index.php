@@ -92,8 +92,13 @@ if ($q_projects) {
                         <a href="detail_project.php?id=<?php echo $p_id; ?>" style="text-decoration: none; max-width: 80%;">
                             <h3><?php echo htmlspecialchars($row['project_name']); ?></h3>
                         </a>
-                        <div class="action-buttons">
-                            <a href="hapus_project.php?id=<?php echo $p_id; ?>" onclick="return confirm('Hapus project ini secara permanen?');" class="btn-delete"><i class="fas fa-trash-alt"></i></a>
+                        <div class="action-buttons" style="display: flex; gap: 15px; align-items: center;">
+                            <a href="edit_project.php?id=<?php echo $p_id; ?>" class="btn-edit" style="color: #94A3B8; font-size: 15px; transition: 0.2s;" title="Edit Project" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='#94A3B8'">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="hapus_project.php?id=<?php echo $p_id; ?>" onclick="return confirm('Hapus project ini secara permanen?');" class="btn-delete" style="color: #EF4444; font-size: 15px; transition: 0.2s;" title="Hapus Project" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
                         </div>
                     </div>
                     

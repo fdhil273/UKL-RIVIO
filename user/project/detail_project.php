@@ -37,7 +37,7 @@ $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($project['project_name']); ?> | LockIn</title>
+    <title><?php echo htmlspecialchars($project['project_name']); ?> | RIVIO</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../UI/user.css">
     <style>
@@ -47,7 +47,6 @@ $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
         .list-item-work:last-child { border-bottom: none; }
         .task-text-done { text-decoration: line-through; color: #94A3B8; }
         
-        /* Tombol Tambah Kecil */
         .btn-quick-add { background: #F1F5F9; color: var(--primary); border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .btn-quick-add:hover { background: var(--primary); color: white; }
     </style>
@@ -107,9 +106,16 @@ $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
                                     <?php echo htmlspecialchars($t['task_name']); ?>
                                 </span>
                             </div>
-                            <span style="font-size: 11px; color: #94A3B8;">
-                                Deadline: <?php echo date('d M', strtotime($t['deadline'])); ?>
-                            </span>
+                            
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <span style="font-size: 11px; color: #94A3B8;">
+                                    Deadline: <?php echo date('d M', strtotime($t['deadline'])); ?>
+                                </span>
+                                <div style="display: flex; gap: 10px;">
+                                    <a href="edit_task_project.php?id=<?php echo $t['id']; ?>&p_id=<?php echo $id_project; ?>" style="color: #94A3B8; text-decoration: none;" title="Edit Tugas"><i class="fas fa-edit"></i></a>
+                                    <a href="hapus_task_project.php?id=<?php echo $t['id']; ?>&p_id=<?php echo $id_project; ?>" onclick="return confirm('Hapus tugas ini?');" style="color: #EF4444; text-decoration: none;" title="Hapus Tugas"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
                         </div>
                     <?php 
                         } 
@@ -132,8 +138,14 @@ $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
                         while($n = mysqli_fetch_assoc($q_notes)) { 
                             $isi_singkat = strlen($n['content']) > 80 ? substr($n['content'], 0, 80) . '...' : $n['content'];
                     ?>
-                        <div style="background: #FFFDF6; border: 1px solid #FEF3C7; padding: 15px; border-radius: 16px;">
-                            <h4 style="margin: 0 0 5px 0; color: #D97706; font-size: 15px; font-weight: 700;"><?php echo htmlspecialchars($n['title']); ?></h4>
+                        <div style="background: #FFFDF6; border: 1px solid #FEF3C7; padding: 15px; border-radius: 16px; position: relative;">
+                            
+                            <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 12px;">
+                                <a href="edit_note_project.php?id=<?php echo $n['id']; ?>&p_id=<?php echo $id_project; ?>" style="color: #D97706; text-decoration: none; opacity: 0.7; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Edit Catatan"><i class="fas fa-edit"></i></a>
+                                <a href="hapus_note_project.php?id=<?php echo $n['id']; ?>&p_id=<?php echo $id_project; ?>" onclick="return confirm('Hapus catatan ini?');" style="color: #EF4444; text-decoration: none; opacity: 0.7; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="Hapus Catatan"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+
+                            <h4 style="margin: 0 0 5px 0; color: #D97706; font-size: 15px; font-weight: 700; padding-right: 40px;"><?php echo htmlspecialchars($n['title']); ?></h4>
                             <p style="margin: 0 0 10px 0; font-size: 13px; color: #78350F; line-height: 1.4;"><?php echo htmlspecialchars($isi_singkat); ?></p>
                             <span style="font-size: 11px; color: #B45309; font-weight: 500;"><i class="far fa-clock"></i> <?php echo date('d M Y', strtotime($n['created_at'])); ?></span>
                         </div>
