@@ -5,15 +5,22 @@ include '../../config/koneksi.php';
 if (isset($_POST['simpan_finance'])) {
     $id_user = $_SESSION['id_user'];
     
-    // MENANGKAP DATA DENGAN NAMA INGGRIS (Sesuai form)
-    $type = mysqli_real_escape_string($koneksi, $_POST['type']);
-    $amount = mysqli_real_escape_string($koneksi, $_POST['amount']);
-    $description = mysqli_real_escape_string($koneksi, $_POST['description']);
-    $date_transaction = mysqli_real_escape_string($koneksi, $_POST['date_transaction']);
+    $type = $_POST['type'];
+    $amount = $_POST['amount'];
+    $description = $_POST['description'];
+    $date_transaction = $_POST['date_transaction'];
+    $project_id = $_POST['project_id'];
     
-    // INSERT KE DATABASE
-    mysqli_query($koneksi, "INSERT INTO finance (user_id, type, amount, description, date_transaction) VALUES ('$id_user', '$type', '$amount', '$description', '$date_transaction')");
+    // Validasi project_id jika kosong set jadi NULL
+    $project_id = !empty($project_id) ? $project_id : NULL;
     
-    header("Location: index.php");
+    $stmt = mysqli_prepare($koneksi, "INSERT INTO finance (user_id, project_id, type, amount, description, date_transaction) VALUES (?, ?, ?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "iisdss", $id_user, $project_id, $type, $amount, $description, $date_transaction);
+    
+    if (mysqli_stmt_execute($stmt)) {
+        header("Location: index.php?status=success");
+    } else {
+        die("Gagal menyimpan finance: " . mysqli_error($koneksi));
+    }
 }
 ?>

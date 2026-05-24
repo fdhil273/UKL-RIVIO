@@ -13,8 +13,12 @@ $id_note = isset($_GET['id']) ? mysqli_real_escape_string($koneksi, $_GET['id'])
 if (isset($_POST['update_note'])) {
     $title_baru = mysqli_real_escape_string($koneksi, $_POST['title']);
     $content_baru = mysqli_real_escape_string($koneksi, $_POST['content']);
+    $project_id = mysqli_real_escape_string($koneksi, $_POST['project_id']);
     
-    mysqli_query($koneksi, "UPDATE notes SET title = '$title_baru', content = '$content_baru' WHERE id = '$id_note' AND user_id = '$id_user'");
+    // Validasi project_id jika kosong set jadi NULL
+    $project_value = !empty($project_id) ? "'$project_id'" : "NULL";
+    
+    mysqli_query($koneksi, "UPDATE notes SET title = '$title_baru', content = '$content_baru', project_id = $project_value WHERE id = '$id_note' AND user_id = '$id_user'");
     header("Location: index.php");
     exit();
 }
@@ -45,6 +49,19 @@ if (!$data) {
                 <div style="margin-bottom: 15px;">
                     <label style="font-size: 13px; color: #666;">Judul</label>
                     <input type="text" name="title" value="<?php echo htmlspecialchars($data['title']); ?>" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; font-weight: bold; margin-top: 5px;" required>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 13px; color: #666;">Alokasi Project (Opsional)</label>
+                    <select name="project_id" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; background: white; cursor: pointer; color: #64748B; margin-top: 5px;">
+                        <option value="">-- Berdiri Sendiri --</option>
+                        <?php
+                        $q_proj = mysqli_query($koneksi, "SELECT id, project_name FROM projects WHERE user_id='$id_user'");
+                        while($p = mysqli_fetch_assoc($q_proj)) {
+                            $selected = ($data['project_id'] == $p['id']) ? 'selected' : '';
+                            echo "<option value='".$p['id']."' $selected>".$p['project_name']."</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div style="margin-bottom: 20px;">
                     <label style="font-size: 13px; color: #666;">Isi Catatan</label>

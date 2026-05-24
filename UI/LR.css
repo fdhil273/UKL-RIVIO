@@ -1,4 +1,6 @@
-/* Palet Warna Luar Angkasa */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Palet Warna Luar Angkasa Asli RIVIO */
 :root {
     --color-galaxy: #0b2775;
     --color-planetary: #334EAC;
@@ -9,51 +11,81 @@
     --color-milky-way: #FFF9F0;
 }
 
-/* Reset margin dasar */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Background utama halaman */
 body {
     background-color: var(--color-milky-way);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: var(--color-galaxy);
+    padding: 20px;
 }
 
-/* Kotak Form Login */
+/* Container Card Utama */
 .auth-container {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(8, 31, 92, 0.08);
+    background: #ffffff;
     width: 100%;
-    max-width: 400px;
-    text-align: center;
-    border-top: 6px solid var(--color-planetary);
+    max-width: 900px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(11, 39, 117, 0.08);
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
 }
 
-.auth-container h2 {
+/* Membalik posisi untuk halaman Register (Gambar di Kiri) */
+.auth-container.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Sisi Tempat Form */
+.auth-form-side {
+    flex: 1;
+    padding: 50px 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* SUSUNAN LOGO VERTIKAL & RATATENGAH */
+.brand-logos {
+    display: flex;
+    flex-direction: column; /* Membuat logo ikon di atas, teks khas di bawah */
+    align-items: center;    /* Memosisikan tepat di tengah-tengah */
+    gap: 10px;
     margin-bottom: 25px;
-    color: var(--color-galaxy);
-    font-size: 28px;
-    font-weight: 700;
+}
+.brand-logos img.logo-icon {
+    height: 45px; /* Sedikit disesuaikan agar proporsional saat menumpuk */
+    width: auto;
+}
+.brand-logos img.logo-text {
+    height: 20px; 
+    width: auto;
 }
 
-/* Susunan Input */
+/* JUDUL RATATENGAH */
+.auth-title {
+    font-size: 26px;
+    color: var(--color-galaxy);
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-align: center; /* Membuat teks Welcome Back / Buat Akun berada di tengah */
+}
+
+/* Styling Input Form */
 form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-/* Desain Kolom Input (Username & Password) */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
@@ -61,56 +93,89 @@ input[type="password"] {
     padding: 14px 16px;
     border: 2px solid var(--color-sky);
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--color-galaxy);
     background-color: var(--color-meteor);
     outline: none;
     transition: all 0.3s ease;
 }
 
+input::placeholder { 
+    color: var(--color-universe); 
+}
+
 input:focus {
     border-color: var(--color-universe);
     background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(186, 214, 235, 0.4);
+    box-shadow: 0 0 0 3px rgba(186, 214, 235, 0.4); 
 }
 
-/* Desain Tombol Login */
-button[type="submit"] {
+/* Tombol Submit */
+.btn-primary {
     background-color: var(--color-planetary);
     color: #ffffff;
     padding: 14px;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s;
-    margin-top: 8px;
+    transition: 0.3s;
+    margin-top: 5px;
 }
 
-button[type="submit"]:hover {
+.btn-primary:hover {
     background-color: var(--color-galaxy);
 }
 
-button[type="submit"]:active {
-    transform: scale(0.98);
-}
-
-/* Bagian Link Register di Bawah */
+/* Teks Pranala Bawah */
 .auth-footer {
-    margin-top: 25px;
-    font-size: 14px;
-    color: #666;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--color-universe);
+    text-align: center;
+    font-weight: 500;
 }
 
 .auth-footer a {
-    color: var(--color-universe);
+    color: var(--color-planetary);
     text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
+    font-weight: 700;
 }
 
 .auth-footer a:hover {
-    color: var(--color-planetary);
     text-decoration: underline;
+    color: var(--color-galaxy);
+}
+
+/* Sisi Gambar Ilustrasi dengan Sentuhan Warna Soft Blue */
+.auth-image-side {
+    flex: 1; 
+    background-color: #e6f0fa; /* Background Soft Blue untuk membedakan area */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+/* Ukuran Gambar Ilustrasi */
+.auth-image-side img {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Responsivitas untuk Layar Gawai (HP) */
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column !important;
+        max-width: 400px;
+    }
+    .auth-image-side {
+        display: none; 
+    }
+    .auth-form-side {
+        padding: 40px 30px;
+    }
 }

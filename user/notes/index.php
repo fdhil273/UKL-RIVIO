@@ -9,17 +9,13 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
 
 $id_user = $_SESSION['id_user'];
 
-// --- LOGIKA SEARCH ---
-$search = isset($_GET['search']) ? mysqli_real_escape_string($koneksi, $_GET['search']) : '';
-$query_sql = "SELECT * FROM notes WHERE user_id='$id_user'";
-
-if (!empty($search)) {
-    // Cari berdasarkan judul atau isi
-    $query_sql .= " AND (title LIKE '%$search%' OR content LIKE '%$search%')";
-}
-
-$query_sql .= " ORDER BY id DESC";
-$q_notes = mysqli_query($koneksi, $query_sql);
+// --- LOGIKA SEARCH (Safe with Prepared Statements) ---
+$search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%%";
+$stmt = mysqli_prepare($koneksi, "SELECT * FROM notes WHERE user_id=? AND deleted_at IS NULL AND (title LIKE ? OR content LIKE ?) ORDER BY id DESC");
+mysqli_stmt_bind_param($stmt, "iss", $id_user, $search, $search);
+mysqli_stmt_execute($stmt);
+$q_notes = mysqli_stmt_get_result($stmt);
+$search = isset($_GET['search']) ? $_GET['search'] : ''; // For display
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +58,17 @@ $q_notes = mysqli_query($koneksi, $query_sql);
                             <input type="text" name="title" placeholder="Judul Catatan" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; font-weight: bold;" required>
                         </div>
                         <div style="margin-bottom: 15px;">
+                            <select name="project_id" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; background: white; cursor: pointer; color: #64748B;">
+                                <option value="">-- Berdiri Sendiri --</option>
+                                <?php
+                                $q_proj = mysqli_query($koneksi, "SELECT id, project_name FROM projects WHERE user_id='$id_user'");
+                                while($p = mysqli_fetch_assoc($q_proj)) {
+                                    echo "<option value='".$p['id']."'>".$p['project_name']."</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 15px;">
                             <textarea name="content" rows="6" placeholder="Tulis sesuatu..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; resize: none; font-family: inherit;" required></textarea>
                         </div>
                         <button type="submit" name="simpan_note" style="background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold;"><i class="fas fa-save"></i> Simpan Catatan</button>
@@ -90,8 +97,15 @@ $q_notes = mysqli_query($koneksi, $query_sql);
                             
                             <div class="note-date">
                                 <span><i class="far fa-clock"></i> <?php echo date('d M Y', strtotime($row['created_at'])); ?></span>
+                                <?php if(!empty($row['project_id'])): 
+                                    $p_id = $row['project_id'];
+                                    $q_p = mysqli_query($koneksi, "SELECT project_name FROM projects WHERE id='$p_id'");
+                                    $p_data = mysqli_fetch_assoc($q_p);
+                                ?>
+                                    <span style="color: var(--primary); font-size: 11px; margin-left: 10px;"><i class="fas fa-folder"></i> <?php echo htmlspecialchars($p_data['project_name']); ?></span>
+                                <?php endif; ?>
                                 <?php if($is_long): ?>
-                                    <a href="edit_note.php?id=<?php echo $row['id']; ?>" style="color: var(--primary); text-decoration: none; font-size: 11px; font-weight: bold;">Baca Selengkapnya</a>
+                                    <a href="edit_note.php?id=<?php echo $row['id']; ?>" style="color: var(--primary); text-decoration: none; font-size: 11px; font-weight: bold; display: block; margin-top: 5px;">Baca Selengkapnya</a>
                                 <?php endif; ?>
                             </div>
                         </div>

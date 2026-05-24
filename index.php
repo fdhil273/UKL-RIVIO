@@ -172,7 +172,7 @@
     <nav>
         <div class="logo-group">
             <img src="asset/Logo.png" height="35" alt="">
-            <img src="asset/RIVIO.PNG" height="18" alt="">
+            <img src="asset/RIVIO.png" height="18" alt="">
         </div>
         <div class="nav-links">
             <!-- Menambahkan tanda # untuk internal link -->
@@ -186,7 +186,7 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <img src="asset/RIVIO.PNG" class="hero-title-img" alt="RIVIO">
+                <img src="asset/RIVIO.png" class="hero-title-img" alt="RIVIO">
                 <p class="hero-desc">
                     Simplify your life with Rivio. Manage your schedule, complete tasks, 
                     and track your finances with one integrated second brain.
@@ -194,7 +194,7 @@
                 <a href="register.php" class="btn-white">GET STARTED</a>
             </div>
             <div class="hero-visual">
-                <img src="asset/foto 1.png" alt="">
+                <img src="asset/foto_1.png" alt="">
             </div>
         </section>
 
@@ -203,7 +203,7 @@
             <span class="section-label">PROBLEM</span>
             <div class="problem-box">
                 <div class="problem-img">
-                    <img src="asset/foto 2.png" alt="">
+                    <img src="asset/foto_2.png" alt="">
                 </div>
                 <p class="problem-text">
                     OTAK MANUSIA DIRANCANG UNTUK MENCIPTAKAN IDE, BUKAN MENYIMPANNYA. 
@@ -224,7 +224,7 @@
                     <p>Ubah rencana menjadi hasil nyata. Dengan Task, Anda tidak hanya mencatat daftar tugas, tapi menyetel prioritas. Memastikan tidak ada tenggat waktu yang terlewat.</p>
                 </div>
                 <div class="feature-img">
-                    <img src="asset/foto 3.png" alt="">
+                    <img src="asset/foto_3.png" alt="">
                 </div>
                 <div class="dot dot-blue-dark"></div>
             </div>
@@ -236,7 +236,7 @@
                     <p>Jangan biarkan ide hebat menguap. Fitur Notes dirancang untuk menangkap inspirasi secepat kilat. Semuanya tersimpan rapi dan mudah dicari.</p>
                 </div>
                 <div class="feature-img">
-                    <img src="asset/foto 4.png" alt="">
+                    <img src="asset/foto_4.png" alt="">
                 </div>
                 <div class="dot dot-blue-dark"></div>
             </div>
@@ -248,7 +248,7 @@
                     <p>Keputusan finansial yang lebih baik dimulai dari pencatatan yang disiplin. Lacak arus kas, atur anggaran, dan lihat profil keuangan secara transparan.</p>
                 </div>
                 <div class="feature-img">
-                    <img src="asset/foto 5.png" alt="">
+                    <img src="asset/foto_5.png" alt="">
                 </div>
                 <div class="dot dot-blue-dark" style="background: #1e88e5;"></div>
             </div>
@@ -259,7 +259,7 @@
         <div class="footer-main">
             <div class="footer-brand">
                 <img src="asset/Logo.png" alt="Logo" style="height: 24px; width: auto;">
-                <img src="asset/RIVIO.PNG" alt="RIVIO" style="height: 14px; width: auto;">
+                <img src="asset/RIVIO.png" alt="RIVIO" style="height: 14px; width: auto;">
                 <p>Created by Achmad Fadhil • 2026</p>
             </div>
             <div class="footer-nav">

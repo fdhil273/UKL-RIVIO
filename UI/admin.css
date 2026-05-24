@@ -127,6 +127,46 @@ tr:hover { background-color: #fcfcfc; }
     width: 100%;
 }
 
+/* --- RESPONSIVE MEDIA QUERIES --- */
+@media (max-width: 992px) {
+    .navbar {
+        padding: 15px 20px;
+    }
+    
+    .stats-container {
+        flex-direction: column;
+    }
+    
+    .search-form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 18px;
+    }
+    
+    .navbar-menu a span {
+        display: none; /* Sembunyikan teks logout di HP, sisakan ikon */
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .table-container {
+        padding: 15px;
+        overflow-x: auto; /* Scroll horizontal untuk tabel */
+    }
+    
+    table {
+        min-width: 600px;
+    }
+}
+
 .card-stat { 
     flex: 1; /* Membuat ketiganya punya lebar yang sama rata */
     background: white; 

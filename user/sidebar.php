@@ -5,30 +5,50 @@ $email_user = isset($_SESSION['email']) ? $_SESSION['email'] : "email@belumdiset
 $inisial = strtoupper(substr($nama_user, 0, 1));
 
 // BASE URL (Jalur mutlak agar gambar & link tidak nyasar)
-$base_url = "/belajarphp/RIVIO-UKL"; 
+$base_url = ""; 
 
-// LOGIKA CERDAS DETEKSI MENU AKTIF (Membaca jalur folder, bukan cuma nama file)
+// 5. Notifications Count (NEW)
+include_once __DIR__ . '/../config/koneksi.php';
+$id_user_sidebar = $_SESSION['id_user'];
+$stmt_notif_sidebar = mysqli_prepare($koneksi, "SELECT COUNT(*) as total FROM notifications WHERE user_id = ? AND is_read = 0");
+mysqli_stmt_bind_param($stmt_notif_sidebar, "i", $id_user_sidebar);
+mysqli_stmt_execute($stmt_notif_sidebar);
+$notif_unread_sidebar = mysqli_stmt_get_result($stmt_notif_sidebar)->fetch_assoc()['total'] ?? 0;
+
+// LOGIKA CERDAS DETEKSI MENU AKTIF
 $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $is_dashboard = strpos($uri_path, '/dashboard.php') !== false;
-$is_calendar  = strpos($uri_path, '/calendar') !== false;
-$is_projects  = strpos($uri_path, '/project') !== false;
-$is_notes     = strpos($uri_path, '/note') !== false;
-$is_task      = strpos($uri_path, '/task') !== false;
-$is_finance   = strpos($uri_path, '/finance') !== false;
-$is_setting   = strpos($uri_path, '/setting') !== false;
+$is_calendar  = strpos($uri_path, '/kalender/') !== false;
+$is_projects  = strpos($uri_path, '/project/') !== false;
+$is_notes     = strpos($uri_path, '/notes/') !== false;
+$is_task      = strpos($uri_path, '/task/') !== false;
+$is_finance   = strpos($uri_path, '/finance/') !== false;
+$is_setting   = strpos($uri_path, '/setting.php') !== false;
+$is_notif     = strpos($uri_path, '/notifications.php') !== false;
 ?>
 
-<div class="sidebar">
+<!-- Tombol Toggle Sidebar untuk Mobile -->
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<div class="sidebar" id="sidebar">
     <div class="sidebar-brand" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; margin-bottom: 40px; padding-top: 10px;">
-        <img src="<?php echo $base_url; ?>/asset/logo.png" alt="Logo Ikon" style="height: 45px; width: auto; object-fit: contain;">
+        <img src="<?php echo $base_url; ?>/asset/Logo.png" alt="Logo Ikon" style="height: 45px; width: auto; object-fit: contain;">
         <img src="<?php echo $base_url; ?>/asset/RIVIO.png" alt="Teks RIVIO" style="height: 20px; width: auto; object-fit: contain;">
     </div>
-    
+
     <div class="sidebar-menu">
         <a href="<?php echo $base_url; ?>/user/dashboard.php" class="<?php echo $is_dashboard ? 'active' : ''; ?>">
             <i class="fas fa-border-all"></i> Dashboard
         </a>
-        <a href="<?php echo $base_url; ?>/user/kalender/index.php" class="<?php echo $is_kalender ? 'active' : ''; ?>">
+        <a href="<?php echo $base_url; ?>/user/notifications.php" class="<?php echo $is_notif ? 'active' : ''; ?>" style="display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fas fa-bell"></i> Notifications</span>
+            <?php if ($notif_unread_sidebar > 0) { ?>
+                <span style="background: #FF4757; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold;"><?php echo $notif_unread_sidebar; ?></span>
+            <?php } ?>
+        </a>
+        <a href="<?php echo $base_url; ?>/user/kalender/index.php" class="<?php echo $is_calendar ? 'active' : ''; ?>">
             <i class="far fa-calendar-alt"></i> Calendar
         </a>
         <a href="<?php echo $base_url; ?>/user/project/index.php" class="<?php echo $is_projects ? 'active' : ''; ?>">
@@ -46,11 +66,11 @@ $is_setting   = strpos($uri_path, '/setting') !== false;
     </div>
 
     <a href="<?php echo $base_url; ?>/user/setting.php" title="Buka Pengaturan Akun" class="sidebar-profile <?php echo $is_setting ? 'active' : ''; ?>" style="margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 15px 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; text-decoration: none; cursor: pointer; transition: 0.3s;">
-        
+
         <div class="profile-avatar" style="flex-shrink: 0; width: 40px; height: 40px; background: #e0eafc; border-radius: 50%; color: #2148C0; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;">
             <?php echo $inisial; ?>
         </div>
-        
+
         <div style="overflow: hidden; width: 100%;">
             <div style="font-weight: bold; font-size: 14px; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 <?php echo $nama_user; ?>
@@ -59,9 +79,15 @@ $is_setting   = strpos($uri_path, '/setting') !== false;
                 <?php echo $email_user; ?>
             </div>
         </div>
-        
+
         <div style="color: rgba(255,255,255,0.5); font-size: 12px; margin-left: auto;">
             <i class="fas fa-cog"></i>
         </div>
     </a>
 </div>
+
+<script>
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+}
+</script>

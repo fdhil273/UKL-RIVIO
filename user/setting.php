@@ -22,8 +22,11 @@ if (isset($_POST['simpan_setting'])) {
 
     // Cek apakah password ikut diganti
     if (!empty($new_password)) {
-        // Tambahkan backtick pada nama tabel `users`
-        mysqli_query($koneksi, "UPDATE `users` SET username='$username_baru', email='$email_baru', Birth_Date='$birth_date', password='$new_password' WHERE id='$id_user'");
+        // Enkripsi password baru menggunakan Bcrypt (Standar Aman)
+        $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+        
+        // Simpan password yang sudah di-hash ke database
+        mysqli_query($koneksi, "UPDATE `users` SET username='$username_baru', email='$email_baru', Birth_Date='$birth_date', password='$password_hash' WHERE id='$id_user'");
     } else {
         mysqli_query($koneksi, "UPDATE `users` SET username='$username_baru', email='$email_baru', Birth_Date='$birth_date' WHERE id='$id_user'");
     }
@@ -150,7 +153,7 @@ $tanggal_lahir = $user_data['Birth_Date'] ?? '';
             
             <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                 <button type="button" onclick="hideLogoutModal()" style="padding: 10px 35px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; background: #0B1437; color: white; font-size: 14px; transition: 0.3s;">Tidak</button>
-                <a href="../logout.php" style="padding: 10px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; background: #0040ff; color: white; font-size: 14px; transition: 0.3s;">Ya</a>
+                <a href="/logout.php" style="padding: 10px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; background: #0040ff; color: white; font-size: 14px; transition: 0.3s;">Ya</a>
             </div>
             
         </div>

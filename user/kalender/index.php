@@ -29,7 +29,15 @@ if ($view == 'week') {
     
     $tgl_awal_db = date('Y-m-d', $start_of_week);
     $tgl_akhir_db = date('Y-m-d', strtotime('+6 days', $start_of_week));
-    $q_jadwal = mysqli_query($koneksi, "SELECT * FROM jadwal WHERE user_id='$id_user' AND DATE(waktu_mulai) BETWEEN '$tgl_awal_db' AND '$tgl_akhir_db'");
+    
+    $stmt = mysqli_prepare($koneksi, "SELECT * FROM jadwal WHERE user_id=? AND deleted_at IS NULL AND DATE(waktu_mulai) BETWEEN ? AND ?");
+    mysqli_stmt_bind_param($stmt, "iss", $id_user, $tgl_awal_db, $tgl_akhir_db);
+    mysqli_stmt_execute($stmt);
+    $q_jadwal = mysqli_stmt_get_result($stmt);
+
+    // Initialize these for safe rendering in week view
+    $str = 0;
+    $day_count = 0;
     
 } else {
     // --- LOGIKA 1 BULAN ---
@@ -44,7 +52,10 @@ if ($view == 'week') {
     $day_count = date('t', $timestamp);
     $str = date('w', $timestamp); 
     
-    $q_jadwal = mysqli_query($koneksi, "SELECT * FROM jadwal WHERE user_id='$id_user' AND DATE_FORMAT(waktu_mulai, '%Y-%m') = '$ym'");
+    $stmt = mysqli_prepare($koneksi, "SELECT * FROM jadwal WHERE user_id=? AND deleted_at IS NULL AND DATE_FORMAT(waktu_mulai, '%Y-%m') = ?");
+    mysqli_stmt_bind_param($stmt, "is", $id_user, $ym);
+    mysqli_stmt_execute($stmt);
+    $q_jadwal = mysqli_stmt_get_result($stmt);
 }
 
 if($q_jadwal) {

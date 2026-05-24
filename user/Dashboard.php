@@ -12,28 +12,66 @@ $id_user = $_SESSION['id_user'];
 $nama_user = $_SESSION['username'];
 
 // 1. QUERY HITUNG TOTAL FINANCE
-$q_income = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='income'");
-$total_income = mysqli_fetch_assoc($q_income)['total'] ?? 0;
+$stmt_income = mysqli_prepare($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id=? AND type='income' AND deleted_at IS NULL");
+mysqli_stmt_bind_param($stmt_income, "i", $id_user);
+mysqli_stmt_execute($stmt_income);
+$total_income = mysqli_stmt_get_result($stmt_income)->fetch_assoc()['total'] ?? 0;
 
-$q_expense = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='expense'");
-$total_expense = mysqli_fetch_assoc($q_expense)['total'] ?? 0;
+$stmt_expense = mysqli_prepare($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id=? AND type='expense' AND deleted_at IS NULL");
+mysqli_stmt_bind_param($stmt_expense, "i", $id_user);
+mysqli_stmt_execute($stmt_expense);
+$total_expense = mysqli_stmt_get_result($stmt_expense)->fetch_assoc()['total'] ?? 0;
 
 $saldo_akhir = $total_income - $total_expense;
 
 // 2. QUERY AMBIL AKTIVITAS TERBARU
-$q_recent_finance = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_user' ORDER BY date_transaction DESC, id DESC LIMIT 4");
+$stmt_recent = mysqli_prepare($koneksi, "SELECT * FROM finance WHERE user_id=? AND deleted_at IS NULL ORDER BY date_transaction DESC, id DESC LIMIT 4");
+if ($stmt_recent) {
+    mysqli_stmt_bind_param($stmt_recent, "i", $id_user);
+    mysqli_stmt_execute($stmt_recent);
+    $q_recent_finance = mysqli_stmt_get_result($stmt_recent);
+} else {
+    $q_recent_finance = false;
+}
 
 // 3. Ambil Jadwal Terdekat
-$q_jadwal = mysqli_query($koneksi, "SELECT * FROM jadwal WHERE user_id = '$id_user' ORDER BY waktu_mulai ASC LIMIT 3");
+$stmt_jadwal = mysqli_prepare($koneksi, "SELECT * FROM jadwal WHERE user_id = ? AND deleted_at IS NULL AND waktu_mulai >= NOW() ORDER BY waktu_mulai ASC LIMIT 3");
+if ($stmt_jadwal) {
+    mysqli_stmt_bind_param($stmt_jadwal, "i", $id_user);
+    mysqli_stmt_execute($stmt_jadwal);
+    $q_jadwal = mysqli_stmt_get_result($stmt_jadwal);
+} else {
+    $q_jadwal = false;
+}
 
 // 4. Hitung Task (Selesai dan Total)
-// Hitung yang sudah selesai
-$q_task_done = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM tasks WHERE user_id = '$id_user' AND is_done = 1");
-$task_done = mysqli_fetch_assoc($q_task_done)['total'] ?? 0;
+$stmt_task_done = mysqli_prepare($koneksi, "SELECT COUNT(*) as total FROM tasks WHERE user_id = ? AND is_done = 1 AND deleted_at IS NULL");
+if ($stmt_task_done) {
+    mysqli_stmt_bind_param($stmt_task_done, "i", $id_user);
+    mysqli_stmt_execute($stmt_task_done);
+    $task_done = mysqli_stmt_get_result($stmt_task_done)->fetch_assoc()['total'] ?? 0;
+} else {
+    $task_done = 0;
+}
 
-// Hitung total semua tugas (pending + selesai)
-$q_task_all = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM tasks WHERE user_id = '$id_user'");
-$total_tasks = mysqli_fetch_assoc($q_task_all)['total'] ?? 0;
+$stmt_task_all = mysqli_prepare($koneksi, "SELECT COUNT(*) as total FROM tasks WHERE user_id = ? AND deleted_at IS NULL");
+if ($stmt_task_all) {
+    mysqli_stmt_bind_param($stmt_task_all, "i", $id_user);
+    mysqli_stmt_execute($stmt_task_all);
+    $total_tasks = mysqli_stmt_get_result($stmt_task_all)->fetch_assoc()['total'] ?? 0;
+} else {
+    $total_tasks = 0;
+}
+
+// 5. Notifications Count
+$stmt_notif = mysqli_prepare($koneksi, "SELECT COUNT(*) as total FROM notifications WHERE user_id = ? AND is_read = 0");
+if ($stmt_notif) {
+    mysqli_stmt_bind_param($stmt_notif, "i", $id_user);
+    mysqli_stmt_execute($stmt_notif);
+    $notif_unread = mysqli_stmt_get_result($stmt_notif)->fetch_assoc()['total'] ?? 0;
+} else {
+    $notif_unread = 0;
+}
 
 // Hitung persentase progress untuk bar
 $task_progress = ($total_tasks > 0) ? ($task_done / $total_tasks) * 100 : 0;
@@ -84,6 +122,26 @@ for ($i = 6; $i >= 0; $i--) {
                 <input type="text" placeholder="Cari project, tugas, atau catatan...">
             </div>
         </div>
+
+        <!-- NEW: Announcements from Admin -->
+        <?php
+        $q_ann = mysqli_query($koneksi, "SELECT * FROM announcements ORDER BY created_at DESC LIMIT 1");
+        if ($q_ann && mysqli_num_rows($q_ann) > 0) {
+            $ann = mysqli_fetch_assoc($q_ann);
+        ?>
+        <div class="card" style="background: linear-gradient(135deg, #FF4757 0%, #FF6B81 100%); color: white; border: none; margin-bottom: 25px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="background: rgba(255,255,255,0.2); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div style="flex: 1;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 800;"><?php echo htmlspecialchars($ann['title']); ?></h3>
+                    <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;"><?php echo htmlspecialchars($ann['message']); ?></p>
+                </div>
+                <div style="font-size: 11px; opacity: 0.7;"><?php echo date('d M Y', strtotime($ann['created_at'])); ?></div>
+            </div>
+        </div>
+        <?php } ?>
 
         <div class="dashboard-grid">
             

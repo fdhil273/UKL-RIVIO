@@ -9,8 +9,11 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
 
 $id_user = $_SESSION['id_user'];
 
-// Ambil semua tugas milik user, urutkan dari deadline terdekat
-$query = mysqli_query($koneksi, "SELECT * FROM tasks WHERE user_id='$id_user' ORDER BY is_done ASC, deadline ASC");
+// Ambil semua tugas milik user, urutkan dari deadline terdekat (Safe)
+$stmt = mysqli_prepare($koneksi, "SELECT * FROM tasks WHERE user_id=? AND deleted_at IS NULL ORDER BY is_done ASC, deadline ASC");
+mysqli_stmt_bind_param($stmt, "i", $id_user);
+mysqli_stmt_execute($stmt);
+$query = mysqli_stmt_get_result($stmt);
 
 // Siapkan 4 keranjang kosong untuk masing-masing kuadran
 $q1_tasks = [];
@@ -191,6 +194,7 @@ function renderTaskItem($t) {
             </div>
         </div>
         <div class='task-actions'>
+            ".(!$is_done ? "<a href='selesai_task.php?id=".$t['id']."' style='color:#16A34A;' title='Tandai Selesai'><i class='fas fa-check-circle'></i></a>" : "")."
             <a href='edit_task.php?id=".$t['id']."' style='color:#94A3B8;' title='Edit'><i class='fas fa-edit'></i></a>
             <a href='hapus_task.php?id=".$t['id']."' onclick=\"return confirm('Hapus tugas ini?');\" style='color:#EF4444;' title='Hapus'><i class='fas fa-trash-alt'></i></a>
         </div>

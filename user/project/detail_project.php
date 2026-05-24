@@ -10,8 +10,11 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
 $id_user = $_SESSION['id_user'];
 $id_project = isset($_GET['id']) ? mysqli_real_escape_string($koneksi, $_GET['id']) : '';
 
-// 1. AMBIL DATA PROJECT SPESIFIK
-$q_project = mysqli_query($koneksi, "SELECT * FROM projects WHERE id = '$id_project' AND user_id = '$id_user'");
+// 1. AMBIL DATA PROJECT DAN CEK KEANGGOTAAN (Relasi Kuat)
+$q_project = mysqli_query($koneksi, "SELECT p.*, pm.role as user_role 
+                                     FROM projects p 
+                                     JOIN project_members pm ON p.id = pm.project_id 
+                                     WHERE p.id = '$id_project' AND pm.user_id = '$id_user'");
 $project = mysqli_fetch_assoc($q_project);
 
 if (!$project) {
@@ -31,6 +34,21 @@ $q_done = mysqli_query($koneksi, "SELECT COUNT(*) as done FROM tasks WHERE proje
 $done_task = mysqli_fetch_assoc($q_done)['done'] ?? 0;
 
 $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
+
+// 4. KALKULASI FINANCE PROJECT (NEW)
+$q_f_in = mysqli_query($koneksi, "SELECT SUM(amount) as total FROM finance WHERE project_id='$id_project' AND type='income'");
+$project_income = mysqli_fetch_assoc($q_f_in)['total'] ?? 0;
+
+$q_f_out = mysqli_query($koneksi, "SELECT SUM(amount) as total FROM finance WHERE project_id='$id_project' AND type='expense'");
+$project_expense = mysqli_fetch_assoc($q_f_out)['total'] ?? 0;
+
+$project_budget = $project_income - $project_expense;
+
+// 5. AMBIL HISTORY PROJECT (NEW)
+$stmt_hist = mysqli_prepare($koneksi, "SELECT ph.*, u.username FROM project_history ph JOIN users u ON ph.user_id = u.id WHERE ph.project_id = ? ORDER BY ph.created_at DESC LIMIT 10");
+mysqli_stmt_bind_param($stmt_hist, "i", $id_project);
+mysqli_stmt_execute($stmt_hist);
+$q_history = mysqli_stmt_get_result($stmt_hist);
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +105,59 @@ $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
 
         <div class="workspace-grid">
             
+            <div class="card" style="padding: 25px; grid-column: 1 / -1; margin-bottom: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 18px; color: var(--galaxy);"><i class="fas fa-coins" style="color: #2ECC71; margin-right: 10px;"></i> Project Finance</h3>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div style="text-align: right;">
+                            <small style="color: #A3AED0; display: block;">Project Budget</small>
+                            <strong style="color: <?php echo $project_budget >= 0 ? '#16A34A' : '#EF4444'; ?>;">Rp <?php echo number_format($project_budget, 0, ',', '.'); ?></strong>
+                        </div>
+                        <a href="../finance/index.php" class="btn-quick-add" style="color:#2ECC71;" title="Tambah Transaksi ke Project Ini"><i class="fas fa-plus"></i></a>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 20px;">
+                    <div style="flex: 1; background: #F0FDF4; padding: 15px; border-radius: 12px; border: 1px solid #DCFCE7;">
+                        <small style="color: #16A34A;">Pemasukan Project</small>
+                        <div style="font-size: 18px; font-weight: 800; color: #16A34A;">+ Rp <?php echo number_format($project_income, 0, ',', '.'); ?></div>
+                    </div>
+                    <div style="flex: 1; background: #FEF2F2; padding: 15px; border-radius: 12px; border: 1px solid #FEE2E2;">
+                        <small style="color: #EF4444;">Pengeluaran Project</small>
+                        <div style="font-size: 18px; font-weight: 800; color: #EF4444;">- Rp <?php echo number_format($project_expense, 0, ',', '.'); ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 18px; color: var(--galaxy);"><i class="fas fa-users" style="color: #2148C0; margin-right: 10px;"></i> Project Members</h3>
+                    <button onclick="openModal('modalMember')" class="btn-quick-add" title="Undang Teman Berkolaborasi"><i class="fas fa-user-plus"></i></button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <?php 
+                    $q_members = mysqli_query($koneksi, "SELECT pm.*, u.username, u.email FROM project_members pm JOIN users u ON pm.user_id = u.id WHERE pm.project_id = '$id_project'");
+                    while($m = mysqli_fetch_assoc($q_members)) {
+                        $is_owner = $m['role'] == 'owner';
+                    ?>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 32px; height: 32px; background: <?php echo $is_owner ? '#2148C0' : '#E2E8F0'; ?>; color: <?php echo $is_owner ? 'white' : '#64748B'; ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">
+                                    <?php echo strtoupper(substr($m['username'], 0, 1)); ?>
+                                </div>
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 600;"><?php echo htmlspecialchars($m['username']); ?></div>
+                                    <div style="font-size: 11px; color: #94A3B8;"><?php echo htmlspecialchars($m['role']); ?></div>
+                                </div>
+                            </div>
+                            <?php if(!$is_owner && $project['user_id'] == $id_user): ?>
+                                <a href="hapus_member.php?id=<?php echo $m['id']; ?>&p_id=<?php echo $id_project; ?>" onclick="return confirm('Keluarkan member ini?');" style="color: #EF4444; font-size: 12px;"><i class="fas fa-times"></i></a>
+                            <?php endif; ?>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+
             <div class="card" style="padding: 25px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="margin: 0; font-size: 18px; color: var(--galaxy);"><i class="fas fa-tasks" style="color: var(--primary); margin-right: 10px;"></i> Project Tasks</h3>
@@ -198,6 +269,30 @@ $progress = ($tot_task > 0) ? ($done_task / $tot_task) * 100 : 0;
                     <textarea name="content" rows="4" required style="width:100%; padding:12px; border:1px solid #E2E8F0; border-radius:12px; resize:none; font-family:inherit; outline:none;"></textarea>
                 </div>
                 <button type="submit" name="quick_note" style="width:100%; padding:12px; background:#F39C12; color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">Simpan Catatan</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalMember">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin:0; font-size:18px;">Undang Teman</h3>
+                <i class="fas fa-times" style="cursor:pointer; color:#94A3B8;" onclick="closeModal('modalMember')"></i>
+            </div>
+            <form action="tambah_member_project.php" method="POST">
+                <input type="hidden" name="project_id" value="<?php echo $id_project; ?>">
+                <div class="form-group">
+                    <label>Username Teman</label>
+                    <input type="text" name="username" required placeholder="Masukkan username yang ingin diundang...">
+                </div>
+                <div class="form-group">
+                    <label>Akses</label>
+                    <select name="role">
+                        <option value="editor">Editor (Bisa edit task/note)</option>
+                        <option value="viewer">Viewer (Hanya lihat)</option>
+                    </select>
+                </div>
+                <button type="submit" name="invite" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">Kirim Undangan</button>
             </form>
         </div>
     </div>

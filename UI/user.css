@@ -32,6 +32,27 @@ body {
     position: fixed;
     height: 100vh;
     border-radius: 0 30px 30px 0;
+    z-index: 1001;
+    transition: 0.3s;
+}
+
+/* Tombol Toggle Sidebar (Hidden by Default on Desktop) */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    z-index: 1002;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(33, 72, 192, 0.3);
 }
 
 .sidebar-brand {
@@ -99,7 +120,8 @@ body {
 .main-content {
     margin-left: 260px;
     padding: 40px 50px;
-    width: 100%;
+    width: calc(100% - 260px);
+    transition: 0.3s;
 }
 
 .header-user {
@@ -107,6 +129,7 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 30px;
+    gap: 20px;
 }
 
 .header-user h1 {
@@ -145,6 +168,124 @@ body {
     grid-template-columns: 2fr 1fr;
     /* Kiri 2 bagian, Kanan 1 bagian */
     gap: 30px;
+}
+
+/* ... existing code ... */
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablet & Mobile Landscape */
+@media (max-width: 1024px) {
+    .sidebar {
+        left: -260px;
+        border-radius: 0;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 80px 30px 40px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .finance-summary {
+        flex-wrap: wrap;
+    }
+
+    .finance-card {
+        min-width: calc(50% - 10px);
+    }
+}
+
+/* Mobile Portrait */
+@media (max-width: 768px) {
+    .header-user {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .finance-card {
+        min-width: 100%;
+    }
+
+    .task-form {
+        flex-direction: column;
+    }
+
+    .matrix-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-container {
+        flex-direction: column;
+    }
+
+    .calendar-sidebar {
+        width: 100%;
+        order: -1; /* Form di atas kalender pada mobile */
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .settings-container {
+        padding: 20px;
+    }
+
+    .project-header-area {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-user h1 {
+        font-size: 22px;
+    }
+
+    .header-user p {
+        font-size: 18px;
+    }
+
+    .main-content {
+        padding: 70px 15px 30px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .calendar-main {
+        padding: 15px;
+    }
+
+    .calendar-grid th, .calendar-grid td {
+        padding: 4px;
+        font-size: 10px;
+        height: 60px;
+    }
 }
 
 .grid-left {

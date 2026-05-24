@@ -8,15 +8,17 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
 }
 
 $id_user = $_SESSION['id_user'];
-$search = isset($_GET['search']) ? mysqli_real_escape_string($koneksi, $_GET['search']) : '';
+$search_text = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%%";
 
-// Query pencarian
-$where_clause = "user_id='$id_user'";
-if (!empty($search)) {
-    $where_clause .= " AND project_name LIKE '%$search%'";
-}
-
-$q_projects = mysqli_query($koneksi, "SELECT * FROM projects WHERE $where_clause ORDER BY id DESC");
+// Query pencarian dengan JOIN ke project_members agar project "Milik Bersama" muncul (Safe)
+$stmt = mysqli_prepare($koneksi, "SELECT p.*, pm.role FROM projects p 
+              JOIN project_members pm ON p.id = pm.project_id 
+              WHERE pm.user_id=? AND p.deleted_at IS NULL AND p.project_name LIKE ? 
+              ORDER BY p.id DESC");
+mysqli_stmt_bind_param($stmt, "is", $id_user, $search_text);
+mysqli_stmt_execute($stmt);
+$q_projects = mysqli_stmt_get_result($stmt);
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Penghitung Badge Tab
 $count_all = 0; $count_active = 0; $count_completed = 0;

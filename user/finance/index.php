@@ -9,20 +9,26 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] != 'user') {
 
 $id_user = $_SESSION['id_user'];
 
-// 1. HITUNG DENGAN KATA KUNCI 'income' DAN 'expense'
-$q_masuk = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='income'");
-$pemasukan = mysqli_fetch_assoc($q_masuk)['total'] ?? 0;
+// 1. Prepared Statements for Summary
+$stmt_masuk = mysqli_prepare($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id=? AND type='income' AND deleted_at IS NULL");
+mysqli_stmt_bind_param($stmt_masuk, "i", $id_user);
+mysqli_stmt_execute($stmt_masuk);
+$pemasukan = mysqli_stmt_get_result($stmt_masuk)->fetch_assoc()['total'] ?? 0;
 
-$q_keluar = mysqli_query($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id='$id_user' AND type='expense'");
-$pengeluaran = mysqli_fetch_assoc($q_keluar)['total'] ?? 0;
+$stmt_keluar = mysqli_prepare($koneksi, "SELECT SUM(amount) AS total FROM finance WHERE user_id=? AND type='expense' AND deleted_at IS NULL");
+mysqli_stmt_bind_param($stmt_keluar, "i", $id_user);
+mysqli_stmt_execute($stmt_keluar);
+$pengeluaran = mysqli_stmt_get_result($stmt_keluar)->fetch_assoc()['total'] ?? 0;
 
 $saldo = $pemasukan - $pengeluaran;
 
-// 2. TARGET KEUANGAN
-$q_target = mysqli_query($koneksi, "SELECT * FROM finance_target WHERE user_id='$id_user' ORDER BY id DESC LIMIT 1");
-$target_data = mysqli_fetch_assoc($q_target);
+// 2. TARGET KEUANGAN (Fixed table name)
+$stmt_target = mysqli_prepare($koneksi, "SELECT * FROM finance_targets WHERE user_id=? AND deleted_at IS NULL ORDER BY id DESC LIMIT 1");
+mysqli_stmt_bind_param($stmt_target, "i", $id_user);
+mysqli_stmt_execute($stmt_target);
+$target_data = mysqli_stmt_get_result($stmt_target)->fetch_assoc();
 $target_amount = $target_data['target_amount'] ?? 0;
-$target_desc = $target_data['description'] ?? 'Belum ada target';
+$target_desc = $target_data['target_name'] ?? 'Belum ada target';
 
 $progress = 0;
 if ($target_amount > 0 && $saldo > 0) {
@@ -31,7 +37,10 @@ if ($target_amount > 0 && $saldo > 0) {
 }
 
 // 3. RIWAYAT TRANSAKSI
-$q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_user' ORDER BY date_transaction DESC, id DESC");
+$stmt_riwayat = mysqli_prepare($koneksi, "SELECT * FROM finance WHERE user_id=? AND deleted_at IS NULL ORDER BY date_transaction DESC, id DESC");
+mysqli_stmt_bind_param($stmt_riwayat, "i", $id_user);
+mysqli_stmt_execute($stmt_riwayat);
+$q_riwayat = mysqli_stmt_get_result($stmt_riwayat);
 ?>
 
 <!DOCTYPE html>
@@ -79,10 +88,16 @@ $q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_us
                     </div>
                     
                     <form id="formTarget" action="set_target.php" method="POST" style="display: none; margin-bottom: 15px; background: white; padding: 10px; border-radius: 8px;">
-                        <input type="text" name="description" placeholder="Nama Target (ex: Beli Laptop)" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 5px;" required>
-                        <input type="number" name="target_amount" placeholder="Nominal (ex: 5000000)" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 5px;" required>
-                        <button type="submit" style="width: 100%; padding: 8px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">Simpan Target</button>
-                    </form>
+    
+    <input type="text" name="target_name" placeholder="Nama Target (ex: Beli Laptop)" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 5px;" required>
+    
+    <input type="number" name="target_amount" placeholder="Nominal (ex: 5000000)" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 5px;" required>
+    
+    <input type="date" name="deadline" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 5px;" required>
+    
+    <button type="submit" style="width: 100%; padding: 8px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">Simpan Target</button>
+
+</form>
 
                     <h4 style="margin: 0 0 5px 0; color: var(--galaxy);"><?php echo htmlspecialchars($target_desc); ?></h4>
                     <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Rp <?php echo number_format($target_amount, 0, ',', '.'); ?></p>
@@ -110,6 +125,18 @@ $q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_us
                         <div style="margin-bottom: 15px;">
                             <label style="font-size: 13px; color: #666;">Keterangan</label>
                             <input type="text" name="description" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; margin-top: 5px;" required>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-size: 13px; color: #666;">Hubungkan ke Project (Opsional)</label>
+                            <select name="project_id" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #eee; margin-top: 5px; background: white; cursor: pointer;">
+                                <option value="">-- Berdiri Sendiri --</option>
+                                <?php
+                                $q_proj = mysqli_query($koneksi, "SELECT id, project_name FROM projects WHERE user_id='$id_user'");
+                                while($p = mysqli_fetch_assoc($q_proj)) {
+                                    echo "<option value='".$p['id']."'>".$p['project_name']."</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                         <div style="margin-bottom: 20px;">
                             <label style="font-size: 13px; color: #666;">Tanggal</label>
@@ -141,7 +168,16 @@ $q_riwayat = mysqli_query($koneksi, "SELECT * FROM finance WHERE user_id='$id_us
                                 </div>
                                 <div>
                                     <div style="font-weight: 500; font-size: 15px; color: var(--galaxy);"><?php echo htmlspecialchars($row['description']); ?></div>
-                                    <div style="font-size: 12px; color: #A3AED0;"><?php echo date('d M Y', strtotime($row['date_transaction'])); ?></div>
+                                    <div style="font-size: 12px; color: #A3AED0;">
+                                        <?php echo date('d M Y', strtotime($row['date_transaction'])); ?>
+                                        <?php if(!empty($row['project_id'])): 
+                                            $p_id = $row['project_id'];
+                                            $q_p = mysqli_query($koneksi, "SELECT project_name FROM projects WHERE id='$p_id'");
+                                            $p_data = mysqli_fetch_assoc($q_p);
+                                        ?>
+                                            <span style="color: var(--primary); margin-left: 10px;"><i class="fas fa-folder"></i> <?php echo htmlspecialchars($p_data['project_name']); ?></span>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 15px;">
